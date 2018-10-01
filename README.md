@@ -16,7 +16,7 @@ How to use:
 
   - nameApp = My App (application name)
 
-  - output = C:\\my_app (folder where the application will be installed)
+  - output = C:\\\\my_app (folder where the application will be installed)
 
   - fileJar = my_app.jar (name of the executable jar file, with the extension)
 
