@@ -37,7 +37,7 @@ public class Instalador
 	private static JButton btCancelar;
 	private static JTextArea txLog;
 	private static JScrollPane spLog;
-	
+
 	/**
 	 * @param args
 	 * @throws IOException
@@ -65,11 +65,15 @@ public class Instalador
 			e.printStackTrace();
 		}
 
-		initialize(false, "main/resources/properties/config.properties");
+		initialize("main/resources/properties/config.properties");
 
 	}
 
-	public static final void initialize(boolean isPrintConsole, String pathAndFileProperties) throws IOException
+	/**
+	 * @param pathAndFileProperties
+	 * @throws IOException
+	 */
+	public static final void initialize(final String pathAndFileProperties) throws IOException
 	{
 		frame = new JFrame();
 		frame.setSize(400, 370);
@@ -85,12 +89,13 @@ public class Instalador
 		lbFolder = new JLabel();
 		lbFolder.setText("Pasta:");
 		lbFolder.setBounds(15, 10, 100, 20);
-		
-		Properties props = Config.loadProperties(isPrintConsole, pathAndFileProperties);
-		if (props != null) {
-			nameApp  = props.getProperty("nameApp");
-			output   = props.getProperty("output");
-			fileJar  = props.getProperty("fileJar");
+
+		final Properties props = Config.loadProperties(pathAndFileProperties);
+		if (props != null)
+		{
+			nameApp = props.getProperty("nameApp");
+			output = props.getProperty("output");
+			fileJar = props.getProperty("fileJar");
 			fileIcon = props.getProperty("fileIcon");
 			pathIcon = props.getProperty("pathIcon");
 		}
@@ -101,58 +106,57 @@ public class Instalador
 		panel.add(getBtCancelar());
 		panel.add(getSpLog());
 		frame.getContentPane().add(panel);
-		
+
 		frame.setVisible(true);
 
 	}
-	
-	private static void instalar() {
-		
+
+	private static void instalar()
+	{
+
 		txLog.append("iniciando...\n\n");
 
-		File output = new File(getTfFolder().getText());
-		
-		if (!output.exists())		
+		final File output = new File(getTfFolder().getText());
+
+		if (!output.exists())
+		{
 			output.mkdir();
-		
+		}
+
 		source = System.getProperty("user.dir");
-		String pathAndFileJarSource = source + "\\" + fileJar;
-		String pathAndFileJarOutput = output + "\\" + fileJar;
+		final String pathAndFileJarSource = source + "\\" + fileJar;
+		final String pathAndFileJarOutput = output + "\\" + fileJar;
 		txLog.append("Copiar: " + pathAndFileJarSource);
 		txLog.append("\nPara: " + pathAndFileJarOutput);
 		if (new File(pathAndFileJarSource).exists())
+		{
 			Config.copyExternalFile(pathAndFileJarSource, pathAndFileJarOutput);
-		
-//		source = "C:\\Users\\claud\\Desktop";
-//		String pathAndFileJarSource = source + "\\" + fileJar;
-//		String pathAndFileJarOutput = output + "\\" + fileJar;
-//		txLog.append("Copiar: " + pathAndFileJarSource);
-//		txLog.append("\nPara: " + pathAndFileJarOutput);
-//		if (new File(pathAndFileJarSource).exists())
-//			Config.copyExternalFile(pathAndFileJarSource, pathAndFileJarOutput);
-		
-		String pathAndFileIconSource = pathIcon + fileIcon;
-		String pathAndFileIconOutput = output + "\\" + fileIcon;
-		
+		}
+
+		final String pathAndFileIconSource = pathIcon + fileIcon;
+		final String pathAndFileIconOutput = output + "\\" + fileIcon;
+
 		txLog.append("\n\nExtrair: " + pathAndFileIconSource);
 		txLog.append("\nPara: " + pathAndFileIconOutput);
-		
+
 		Config.copyInternalFile(pathAndFileIconSource, pathAndFileIconOutput);
-		
+
 		txLog.append("\n\nAtalho: " + pathAndFileJarOutput);
 		txLog.append("\nÍcone: " + pathAndFileIconOutput);
-		
+
 		Shortcut.createDesktopShortcut(nameApp, pathAndFileJarOutput, pathAndFileIconOutput);
-		
-		getBtInstalar().setVisible(false);		
+
+		getBtInstalar().setVisible(false);
 		getBtCancelar().setText("Fechar");
 		getBtCancelar().setBounds(150, 290, 100, 30);
-		
+
 		txLog.append("\n\nfinalizado com sucesso!");
 	}
-	
-	private static JTextField getTfFolder() {
-		if (tfFolder == null) {
+
+	private static JTextField getTfFolder()
+	{
+		if (tfFolder == null)
+		{
 			tfFolder = new JTextField();
 			tfFolder.setText(output);
 			tfFolder.setBounds(15, 30, 350, 20);
@@ -160,31 +164,40 @@ public class Instalador
 		return tfFolder;
 	}
 
-	private static JTextArea getTxLog() {
-		if (txLog == null) {
+	private static JTextArea getTxLog()
+	{
+		if (txLog == null)
+		{
 			txLog = new JTextArea();
 			txLog.setBounds(15, 70, 350, 200);
 			txLog.setEditable(false);
 		}
 		return txLog;
 	}
-	
-	private static JScrollPane getSpLog() {
-		if (spLog == null) {
+
+	private static JScrollPane getSpLog()
+	{
+		if (spLog == null)
+		{
 			spLog = new JScrollPane();
 			spLog.setBounds(15, 70, 350, 200);
 			spLog.setViewportView(getTxLog());
 		}
 		return spLog;
 	}
-	
-	private static JButton getBtInstalar() {
-		if (btInstalar == null) {
+
+	private static JButton getBtInstalar()
+	{
+		if (btInstalar == null)
+		{
 			btInstalar = new JButton();
 			btInstalar.setBounds(75, 290, 100, 30);
 			btInstalar.setText("Instalar");
-			btInstalar.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(final MouseEvent event) {
+			btInstalar.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(final MouseEvent event)
+				{
 					instalar();
 				}
 			});
@@ -193,13 +206,18 @@ public class Instalador
 		return btInstalar;
 	}
 
-	private static JButton getBtCancelar() {
-		if (btCancelar == null) {
+	private static JButton getBtCancelar()
+	{
+		if (btCancelar == null)
+		{
 			btCancelar = new JButton();
 			btCancelar.setBounds(205, 290, 100, 30);
 			btCancelar.setText("Cancelar");
-			btCancelar.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(final MouseEvent event) {
+			btCancelar.addMouseListener(new MouseAdapter()
+			{
+				@Override
+				public void mouseClicked(final MouseEvent event)
+				{
 					System.exit(0);
 				}
 			});
