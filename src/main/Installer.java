@@ -35,13 +35,14 @@ public class Installer
 	private static JLabel lbFolder;
 	private static JTextField tfFolder;
 	private static String nameApp;
+	private static String desktop;
 	private static String source;
 	private static String output;
 	private static String fileJar;
 	private static String fileIcon;
 	private static String pathIcon;
-	private static JButton btInstalar;
-	private static JButton btCancelar;
+	private static JButton btInstall;
+	private static JButton btCancel;
 	private static JTextArea txLog;
 	private static JScrollPane spLog;
 
@@ -87,14 +88,14 @@ public class Installer
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setTitle("Instalador");
+		frame.setTitle("Installer");
 
 		panel = new JPanel();
 		panel.setLayout(null);
 		panel.setVisible(true);
 
 		lbFolder = new JLabel();
-		lbFolder.setText("Pasta:");
+		lbFolder.setText("Folder:");
 		lbFolder.setBounds(15, 10, 100, 20);
 
 		final Properties props = Utils.loadProperties(pathAndFileProperties);
@@ -109,8 +110,8 @@ public class Installer
 
 		panel.add(lbFolder);
 		panel.add(getTfFolder());
-		panel.add(getBtInstalar());
-		panel.add(getBtCancelar());
+		panel.add(getBtInstall());
+		panel.add(getBtCancel());
 		panel.add(getSpLog());
 		frame.getContentPane().add(panel);
 
@@ -118,7 +119,7 @@ public class Installer
 
 	}
 
-	private static void instalar()
+	private static void install()
 	{
 
 		if (utils == null)
@@ -126,7 +127,7 @@ public class Installer
 			utils = new Utils();
 		}
 
-		txLog.append("iniciando...\n\n");
+		txLog.append(Utils.getDateAndTime() + " - starting installation...\n\n");
 
 		final File file = new File(getTfFolder().getText());
 
@@ -135,42 +136,45 @@ public class Installer
 			file.mkdir();
 		}
 
+		desktop = JShellLink.getDirectory("desktop");
 		source = System.getProperty("user.dir");
-
 		final String pathAndFileJarSource = source + "\\" + fileJar;
 		final String pathAndFileJarOutput = output + "\\" + fileJar;
 		final String pathAndFileIconSource = pathIcon + fileIcon;
 		final String pathAndFileIconOutput = output + "\\" + fileIcon;
-		final String pathAndFileLinkOutput = JShellLink.getDirectory("desktop") + "\\" + nameApp + ".lnk";
+		final String pathAndFileLinkOutput = desktop + "\\" + nameApp + ".lnk";
 		final String pathAndFileInitOutput = output + "\\init.txt";
 
-		txLog.append("Copy file: " + pathAndFileJarSource);
-		txLog.append("\nOutput: " + pathAndFileJarOutput);
+		txLog.append(Utils.getDateAndTime() + " - copy file: " + pathAndFileJarSource);
+		txLog.append("\n" + Utils.getDateAndTime() + " - output: " + pathAndFileJarOutput);
 		if (new File(pathAndFileJarSource).exists() && !source.equals(output))
 		{
 			utils.copyExternalFile(pathAndFileJarSource, pathAndFileJarOutput);
 		}
-		txLog.append("\nOK: " + pathAndFileJarOutput);
+		txLog.append("\n" + Utils.getDateAndTime() + " - ok: " + pathAndFileJarOutput);
 
-		txLog.append("\n\nExtract: " + pathAndFileIconSource);
-		txLog.append("\nOutput: " + pathAndFileIconOutput);
+		txLog.append("\n\n" + Utils.getDateAndTime() + " - extract: " + pathAndFileIconSource);
+		txLog.append("\n" + Utils.getDateAndTime() + " - output: " + pathAndFileIconOutput);
 		utils.copyInternalFile(pathAndFileIconSource, pathAndFileIconOutput);
-		txLog.append("\nOK: " + pathAndFileIconOutput);
+		txLog.append("\n" + Utils.getDateAndTime() + " - ok: " + pathAndFileIconOutput);
 
-		txLog.append("\n\nShortcut: " + pathAndFileJarOutput);
-		txLog.append("\nOutput: " + pathAndFileLinkOutput);
+		txLog.append("\n\n" + Utils.getDateAndTime() + " - shortcut: " + pathAndFileJarOutput);
+		txLog.append("\n" + Utils.getDateAndTime() + " - output: " + pathAndFileLinkOutput);
 		Shortcut.createDesktopShortcut(nameApp, pathAndFileJarOutput, pathAndFileIconOutput, 0);
-		txLog.append("\nOK: " + pathAndFileLinkOutput);
+		txLog.append("\n" + Utils.getDateAndTime() + " - ok: " + pathAndFileLinkOutput);
 
-		txLog.append("\n\nFile Init: " + pathAndFileInitOutput);
-		Utils.setFileInit(pathAndFileInitOutput, output);
-		txLog.append("\nOK: " + pathAndFileInitOutput);
+		txLog.append("\n\n" + Utils.getDateAndTime() + " - file init: " + pathAndFileInitOutput);
+		txLog.append("\n" + Utils.getDateAndTime() + " - ok: " + pathAndFileInitOutput);
+		txLog.append("\n\n" + Utils.getDateAndTime() + " - installation completed successfully!");
 
-		getBtInstalar().setVisible(false);
-		getBtCancelar().setText("Fechar");
-		getBtCancelar().setBounds(150, 290, 100, 30);
+		txLog.setCaretPosition(txLog.getText().length());
 
-		txLog.append("\n\nfinalizado com sucesso!");
+		Utils.setFileInit(pathAndFileInitOutput, txLog.getText());
+
+		getBtInstall().setVisible(false);
+		getBtCancel().setText("Close");
+		getBtCancel().setBounds(150, 290, 100, 30);
+
 	}
 
 	private static JTextField getTfFolder()
@@ -206,34 +210,34 @@ public class Installer
 		return spLog;
 	}
 
-	private static JButton getBtInstalar()
+	private static JButton getBtInstall()
 	{
-		if (btInstalar == null)
+		if (btInstall == null)
 		{
-			btInstalar = new JButton();
-			btInstalar.setBounds(75, 290, 100, 30);
-			btInstalar.setText("Instalar");
-			btInstalar.addMouseListener(new MouseAdapter()
+			btInstall = new JButton();
+			btInstall.setBounds(75, 290, 100, 30);
+			btInstall.setText("Install");
+			btInstall.addMouseListener(new MouseAdapter()
 			{
 				@Override
 				public void mouseClicked(final MouseEvent event)
 				{
-					instalar();
+					install();
 				}
 			});
 
 		}
-		return btInstalar;
+		return btInstall;
 	}
 
-	private static JButton getBtCancelar()
+	private static JButton getBtCancel()
 	{
-		if (btCancelar == null)
+		if (btCancel == null)
 		{
-			btCancelar = new JButton();
-			btCancelar.setBounds(205, 290, 100, 30);
-			btCancelar.setText("Cancelar");
-			btCancelar.addMouseListener(new MouseAdapter()
+			btCancel = new JButton();
+			btCancel.setBounds(205, 290, 100, 30);
+			btCancel.setText("Cancel");
+			btCancel.addMouseListener(new MouseAdapter()
 			{
 				@Override
 				public void mouseClicked(final MouseEvent event)
@@ -242,7 +246,7 @@ public class Installer
 				}
 			});
 		}
-		return btCancelar;
+		return btCancel;
 	}
 
 }

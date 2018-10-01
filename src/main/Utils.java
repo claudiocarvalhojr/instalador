@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
@@ -151,6 +153,15 @@ public class Utils
 			}
 			printWriter.close();
 		}
+	}
+
+	/**
+	 * @return Date
+	 */
+	public static String getDateAndTime()
+	{
+		final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return df.format(new Date());
 	}
 
 }
