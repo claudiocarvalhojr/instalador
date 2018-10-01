@@ -11,7 +11,7 @@ How to use:
 
     - jshortcut-0.4-oberzalek.jar https://github.com/jimmc/jshortcut
     
-- Create properties file with the following structure:
+- Create properties file in your project, with the following structure:
 
   - nameApp = My App (application name)
 
@@ -23,6 +23,6 @@ How to use:
 
   - pathIcon = /main/resources/img/ (relative path to the icon file in your project)
 
-- Pass relative path of properties file in static initialize method, eg: Installer.initialize ("main/resources/properties/config.properties");
+- Pass the relative path of your properties file in the initialize method call, eg: Installer.initialize ("main/resources/properties/config.properties");
 
 - Generate jar (not executable), without the jars files that are in the lib folder. eg: installer-1.0.jar
