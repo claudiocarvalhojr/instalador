@@ -13,15 +13,16 @@ How to use:
   
 - Create properties file with the following structure:
 
-  - nameApp = application name, eg: My App
 
-  - output = folder where the application will be installed, eg C:\\my_app
+  - nameApp = My App (application name)
 
-  - fileJar = jar file name (with the .jar extension), eg my_app.jar
+  - output = C:\\my_app (folder where the application will be installed)
 
-  - fileIcon = icon file name (with .ico extension), eg: my_icon.ico
+  - fileJar = my_app.jar (name of the executable jar file, with the extension)
 
-  - pathIcon = relative path to the icon file in your project, eg: /main/resources/img/
+  - fileIcon = my_icon.ico (icon file name, with extension)
+
+  - pathIcon = /main/resources/img/ (relative path to the icon file in your project)
 
 - Pass relative path of properties file in static initialize method, eg: Installer.initialize ("main/resources/properties/config.properties");
 
