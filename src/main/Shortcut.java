@@ -13,8 +13,10 @@ public class Shortcut
 	 * @param nameApp
 	 * @param pathFileJar
 	 * @param pathFileIcon
+	 * @param indexIconFolder
 	 */
-	public static void createDesktopShortcut(final String nameApp, final String pathFileJar, final String pathFileIcon)
+	public static void createDesktopShortcut(final String nameApp, final String pathFileJar, final String pathFileIcon,
+			final int indexIconFolder)
 	{
 		try
 		{
@@ -23,7 +25,7 @@ public class Shortcut
 			link.setName(nameApp);
 			link.setPath(JShellLink.getDirectory("") + pathFileJar);
 			link.setIconLocation(pathFileIcon);
-			link.setIconIndex(0);
+			link.setIconIndex(indexIconFolder);
 			link.save();
 		}
 		catch (final Exception ex)

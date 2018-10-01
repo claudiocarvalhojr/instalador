@@ -144,7 +144,7 @@ public class Installer
 		txLog.append("\n\nAtalho: " + pathAndFileJarOutput);
 		txLog.append("\nÍcone: " + pathAndFileIconOutput);
 
-		Shortcut.createDesktopShortcut(nameApp, pathAndFileJarOutput, pathAndFileIconOutput);
+		Shortcut.createDesktopShortcut(nameApp, pathAndFileJarOutput, pathAndFileIconOutput, 0);
 
 		getBtInstalar().setVisible(false);
 		getBtCancelar().setText("Fechar");
