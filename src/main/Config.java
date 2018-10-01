@@ -52,7 +52,7 @@ public class Config
 		try
 		{
 			//			InputStream input = getClass().getResourceAsStream(pathAndFileSource);
-			final InputStream input = Instalador.class.getResourceAsStream(pathAndFileSource);
+			final InputStream input = Installer.class.getResourceAsStream(pathAndFileSource);
 			final File output = new File(pathAndFileDestiny);
 			FileUtils.copyInputStreamToFile(input, output);
 		}
@@ -75,7 +75,7 @@ public class Config
 		final Properties props = new Properties();
 		try
 		{
-			props.load(Instalador.class.getClassLoader().getResourceAsStream(pathAndFileProperties));
+			props.load(Installer.class.getClassLoader().getResourceAsStream(pathAndFileProperties));
 		}
 		catch (final IOException e)
 		{

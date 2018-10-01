@@ -20,7 +20,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 /**
  *
  */
-public class Instalador
+public class Installer
 {
 
 	private static JFrame frame;
