@@ -9,12 +9,15 @@ import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import net.jimmc.jshortcut.JShellLink;
 
 
 /**
@@ -23,6 +26,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Installer
 {
 
+	/**
+	 *
+	 */
+	public static Utils utils;
 	private static JFrame frame;
 	private static JPanel panel;
 	private static JLabel lbFolder;
@@ -50,19 +57,19 @@ public class Installer
 		}
 		catch (final ClassNotFoundException e)
 		{
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		catch (final InstantiationException e)
 		{
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		catch (final IllegalAccessException e)
 		{
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 		catch (final UnsupportedLookAndFeelException e)
 		{
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 
 		initialize("main/resources/properties/config.properties");
@@ -90,7 +97,7 @@ public class Installer
 		lbFolder.setText("Pasta:");
 		lbFolder.setBounds(15, 10, 100, 20);
 
-		final Properties props = Config.loadProperties(pathAndFileProperties);
+		final Properties props = Utils.loadProperties(pathAndFileProperties);
 		if (props != null)
 		{
 			nameApp = props.getProperty("nameApp");
@@ -114,37 +121,50 @@ public class Installer
 	private static void instalar()
 	{
 
+		if (utils == null)
+		{
+			utils = new Utils();
+		}
+
 		txLog.append("iniciando...\n\n");
 
-		final File output = new File(getTfFolder().getText());
+		final File file = new File(getTfFolder().getText());
 
-		if (!output.exists())
+		if (!file.exists())
 		{
-			output.mkdir();
+			file.mkdir();
 		}
 
 		source = System.getProperty("user.dir");
+
 		final String pathAndFileJarSource = source + "\\" + fileJar;
 		final String pathAndFileJarOutput = output + "\\" + fileJar;
-		txLog.append("Copiar: " + pathAndFileJarSource);
-		txLog.append("\nPara: " + pathAndFileJarOutput);
-		if (new File(pathAndFileJarSource).exists())
-		{
-			Config.copyExternalFile(pathAndFileJarSource, pathAndFileJarOutput);
-		}
-
 		final String pathAndFileIconSource = pathIcon + fileIcon;
 		final String pathAndFileIconOutput = output + "\\" + fileIcon;
+		final String pathAndFileLinkOutput = JShellLink.getDirectory("desktop") + "\\" + nameApp + ".lnk";
+		final String pathAndFileInitOutput = output + "\\init.txt";
 
-		txLog.append("\n\nExtrair: " + pathAndFileIconSource);
-		txLog.append("\nPara: " + pathAndFileIconOutput);
+		txLog.append("Copy file: " + pathAndFileJarSource);
+		txLog.append("\nOutput: " + pathAndFileJarOutput);
+		if (new File(pathAndFileJarSource).exists() && !source.equals(output))
+		{
+			utils.copyExternalFile(pathAndFileJarSource, pathAndFileJarOutput);
+		}
+		txLog.append("\nOK: " + pathAndFileJarOutput);
 
-		Config.copyInternalFile(pathAndFileIconSource, pathAndFileIconOutput);
+		txLog.append("\n\nExtract: " + pathAndFileIconSource);
+		txLog.append("\nOutput: " + pathAndFileIconOutput);
+		utils.copyInternalFile(pathAndFileIconSource, pathAndFileIconOutput);
+		txLog.append("\nOK: " + pathAndFileIconOutput);
 
-		txLog.append("\n\nAtalho: " + pathAndFileJarOutput);
-		txLog.append("\nÍcone: " + pathAndFileIconOutput);
-
+		txLog.append("\n\nShortcut: " + pathAndFileJarOutput);
+		txLog.append("\nOutput: " + pathAndFileLinkOutput);
 		Shortcut.createDesktopShortcut(nameApp, pathAndFileJarOutput, pathAndFileIconOutput, 0);
+		txLog.append("\nOK: " + pathAndFileLinkOutput);
+
+		txLog.append("\n\nFile Init: " + pathAndFileInitOutput);
+		Utils.setFileInit(pathAndFileInitOutput, output);
+		txLog.append("\nOK: " + pathAndFileInitOutput);
 
 		getBtInstalar().setVisible(false);
 		getBtCancelar().setText("Fechar");
