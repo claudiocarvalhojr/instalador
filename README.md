@@ -7,12 +7,11 @@ How to use:
 
 - Add the following jar files to the lib folder and to the project build path:
 
-  - commons-io-2.4.jar
-  
-  - jshortcut-0.4-oberzalek.jar
-  
-- Create properties file with the following structure:
+    - commons-io-2.4.jar or higher https://commons.apache.org/proper/commons-io/
 
+    - jshortcut-0.4-oberzalek.jar https://github.com/jimmc/jshortcut
+    
+- Create properties file with the following structure:
 
   - nameApp = My App (application name)
 
