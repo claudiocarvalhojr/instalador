@@ -16,7 +16,7 @@ How to use:
 
   - nameApp = My App (application name)
 
-  - output = C:\\my_app (folder where the application will be installed)
+  - output = C:\\\\my_app (folder where the application will be installed)
 
   - fileJar = my_app.jar (name of the executable jar file, with the extension)
 
@@ -26,4 +26,4 @@ How to use:
 
 - Pass relative path of properties file in static initialize method, eg: Installer.initialize ("main/resources/properties/config.properties");
 
-- Generate jar (not executable), without the jars files that are in the lib folder.
+- Generate jar (not executable), without the jars files that are in the lib folder. eg: installer-1.0.jar
