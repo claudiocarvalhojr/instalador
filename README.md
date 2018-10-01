@@ -1,4 +1,4 @@
-# instalador
+# installer
 Installer for jar files, one can create the folder and shortcut to the application based on previously established settings in properties file.
 
 How to use:
